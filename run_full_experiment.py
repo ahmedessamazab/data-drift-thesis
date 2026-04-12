@@ -36,6 +36,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+from datetime import datetime
+
 from series import choices as series_choices
 from ipnn import IPNN
 from drift_detector import DriftDetector
@@ -136,7 +138,10 @@ WARMUP = 300
 ISE_THRESHOLD = 0.08
 NET = np.linspace(-4, 10, 400)
 
-OUT = "experiment_output"
+
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+OUT = f"experiments/{timestamp}_{build_experiment_name()}"
 os.makedirs(OUT, exist_ok=True)
 
 
@@ -151,6 +156,11 @@ def save_csv(df, name):
     path = os.path.join(OUT, name)
     df.to_csv(path, index=False)
     print(f"  saved -> {path}")
+
+
+def build_experiment_name():
+    drift_names = "_".join([d.drift_type for d in DRIFT_SPECS])
+    return f"N{N}_drifts{len(DRIFT_SPECS)}_{drift_names}_thr{ISE_THRESHOLD}"
 
 
 # ══════════════════════════════════════════════════════════════════════════════
