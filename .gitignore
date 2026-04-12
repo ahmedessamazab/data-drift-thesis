@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .env
+.DS_Store
 # *.log
 # experiment_output/
 # *.csv
