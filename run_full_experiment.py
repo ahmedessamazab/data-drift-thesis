@@ -39,6 +39,7 @@ import json
 
 from datetime import datetime
 
+
 from series import choices as series_choices
 from ipnn import IPNN
 from drift_detector import DriftDetector
@@ -116,8 +117,8 @@ DRIFT_SPECS = [
         drift_type="distribution",
         mean_before=0.0,
         std_before=1.0,
-        mean_after=None,
-        std_after=None,
+        mean_after=0.0,
+        std_after=1.0,
         label="Gaussian → Uniform",
     ),
     DriftSpec(
@@ -140,6 +141,12 @@ ISE_THRESHOLD = 0.08
 NET = np.linspace(-4, 10, 400)
 
 
+# Helper to build experiment name based on config
+def build_experiment_name():
+    drift_names = "_".join([d.drift_type for d in DRIFT_SPECS])
+    return f"N{N}_drifts{len(DRIFT_SPECS)}_{drift_names}"
+
+
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 OUT = f"experiments/{timestamp}_{build_experiment_name()}"
@@ -159,11 +166,6 @@ def save_csv(df, name):
     print(f"  saved -> {path}")
 
 
-def build_experiment_name():
-    drift_names = "_".join([d.drift_type for d in DRIFT_SPECS])
-    return f"N{N}_drifts{len(DRIFT_SPECS)}_{drift_names}_thr{ISE_THRESHOLD}"
-
-
 # ══════════════════════════════════════════════════════════════════════════════
 # STEP 1 — Generate synthetic stream + CSV + plot
 # ══════════════════════════════════════════════════════════════════════════════
@@ -178,6 +180,7 @@ seg_mean = np.zeros(N)
 seg_std = np.zeros(N)
 seg_id = np.zeros(N, dtype=int)
 boundaries = [0] + stream.true_drift_positions + [N]
+# Segment statistics represent nominal post-drift parameters and may not reflect dynamic drift types such as cyclic or gradual transitions.
 for i, (a, b) in enumerate(zip(boundaries[:-1], boundaries[1:])):
     seg_id[a:b] = i
     seg_mean[a:b] = (
@@ -193,8 +196,8 @@ save_csv(
             "value": stream.data,
             "segment_id": seg_id,
             "segment_label": stream.segment_labels,
-            "true_mean": seg_mean,
-            "true_std": seg_std,
+            "nominal_mean": seg_mean,
+            "nominal_std": seg_std,
         }
     ),
     "csv_01_stream_raw.csv",
@@ -238,16 +241,17 @@ alarm_positions = []
 coeff_rows = []
 pdf_snapshots = {}
 
-SNAPSHOT_TIMES = {
-    WARMUP,
-    DRIFT_SPECS[0].position - 1,
-    DRIFT_SPECS[0].position + 100,
-    DRIFT_SPECS[1].position - 1,
-    DRIFT_SPECS[1].position + 100,
-    DRIFT_SPECS[2].position - 1,
-    DRIFT_SPECS[2].position + 200,
-    N - 1,
-}
+SNAPSHOT_TIMES = {WARMUP, N - 1}
+
+for spec in DRIFT_SPECS:
+    if spec.position - 1 >= 0:
+        SNAPSHOT_TIMES.add(spec.position - 1)
+
+    if spec.position + 100 < N:
+        SNAPSHOT_TIMES.add(spec.position + 100)
+
+    if spec.position + 200 < N:
+        SNAPSHOT_TIMES.add(spec.position + 200)
 
 for n, x_new in enumerate(stream.data):
     model.update_aj(x_new, n, 1.0)

@@ -1,0 +1,84 @@
+{
+    "N": 10000,
+    "SEED": 42,
+    "Q_PARAM": 0.5,
+    "K_PARAM": 3.0,
+    "GAMMA": 1.0,
+    "WARMUP": 300,
+    "ISE_THRESHOLD": 0.08,
+    "NET_SIZE": 400,
+    "DRIFTS": [
+        {
+            "position": 800,
+            "type": "mean",
+            "mean_before": 0.0,
+            "std_before": 1.0,
+            "mean_after": 2.5,
+            "std_after": 1.0,
+            "label": "Abrupt mean drift (0 to 2.5)"
+        },
+        {
+            "position": 1500,
+            "type": "variance",
+            "mean_before": 2.5,
+            "std_before": 1.0,
+            "mean_after": 2.5,
+            "std_after": 2.5,
+            "label": "Variance drift (sigma 1 to 2.5)"
+        },
+        {
+            "position": 2200,
+            "type": "gradual",
+            "mean_before": 2.5,
+            "std_before": 2.5,
+            "mean_after": 5.0,
+            "std_after": 1.0,
+            "label": "Gradual mean drift (2.5 to 5.0)"
+        },
+        {
+            "position": 3000,
+            "type": "variance",
+            "mean_before": 5.0,
+            "std_before": 1.0,
+            "mean_after": 5.0,
+            "std_after": 0.3,
+            "label": "Variance shrink (1.0 \u2192 0.3)"
+        },
+        {
+            "position": 4000,
+            "type": "mean",
+            "mean_before": 5.0,
+            "std_before": 0.3,
+            "mean_after": 0.0,
+            "std_after": 1.0,
+            "label": "Mean reversal (5 \u2192 0)"
+        },
+        {
+            "position": 5000,
+            "type": "cyclic",
+            "mean_before": 0.0,
+            "std_before": 1.0,
+            "mean_after": 0.0,
+            "std_after": 1.0,
+            "label": "Cyclic drift (sin wave)"
+        },
+        {
+            "position": 6000,
+            "type": "distribution",
+            "mean_before": 0.0,
+            "std_before": 1.0,
+            "mean_after": 0.0,
+            "std_after": 1.0,
+            "label": "Gaussian \u2192 Uniform"
+        },
+        {
+            "position": 7000,
+            "type": "gradual",
+            "mean_before": 0.0,
+            "std_before": 1.0,
+            "mean_after": 3.0,
+            "std_after": 1.0,
+            "label": "Very slow gradual drift"
+        }
+    ]
+}
