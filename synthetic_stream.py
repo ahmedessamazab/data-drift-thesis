@@ -8,9 +8,11 @@ Creates a data stream with MULTIPLE known drift points so you can:
 
 Drift types supported
 ---------------------
-  - 'mean'     : sudden shift in distribution mean
-  - 'variance' : sudden change in standard deviation
-  - 'gradual'  : mean drifts slowly over a transition window
+  - 'mean'         : sudden shift in distribution mean
+  - 'variance'     : sudden change in standard deviation
+  - 'gradual'      : mean and/or std drift smoothly over a transition window
+  - 'cyclic'       : periodic (sinusoidal) change around the current mean
+  - 'distribution' : structural change in distribution (e.g., Gaussian → Uniform)
 """
 
 import numpy as np
