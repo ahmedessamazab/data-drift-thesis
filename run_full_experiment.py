@@ -35,6 +35,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import json
 
 from datetime import datetime
 
@@ -411,6 +412,33 @@ ax.set_ylabel("Density")
 ax.legend(fontsize=8, ncol=2)
 ax.grid(alpha=0.3)
 save_fig(fig3, "03_pdf_evolution.png")
+
+
+config = {
+    "N": N,
+    "SEED": SEED,
+    "Q_PARAM": Q_PARAM,
+    "K_PARAM": K_PARAM,
+    "GAMMA": GAMMA,
+    "WARMUP": WARMUP,
+    "ISE_THRESHOLD": ISE_THRESHOLD,
+    "NET_SIZE": len(NET),
+    "DRIFTS": [
+        {
+            "position": d.position,
+            "type": d.drift_type,
+            "mean_before": d.mean_before,
+            "std_before": d.std_before,
+            "mean_after": d.mean_after,
+            "std_after": d.std_after,
+            "label": d.label,
+        }
+        for d in DRIFT_SPECS
+    ],
+}
+
+with open(os.path.join(OUT, "experiment_config.json"), "w") as f:
+    json.dump(config, f, indent=4)
 
 print(
     f"""
