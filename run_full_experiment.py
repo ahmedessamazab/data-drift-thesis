@@ -54,7 +54,7 @@ from synthetic_stream import (
 # Configuration
 # ══════════════════════════════════════════════════════════════════════════════
 SEED = 42
-N = 10000
+N = 20000
 
 DRIFT_SPECS = [
     DriftSpec(
@@ -130,6 +130,33 @@ DRIFT_SPECS = [
         std_after=1.0,
         transition_width=800,
         label="Very slow gradual drift",
+    ),
+    DriftSpec(
+        position=9000,
+        drift_type="mean",
+        mean_before=3.0,  # ✅ FIXED
+        std_before=1.0,
+        mean_after=2.5,
+        std_after=1.0,
+        label="Abrupt mean drift 2 (3.0 to 2.5)",
+    ),
+    DriftSpec(
+        position=12000,
+        drift_type="variance",
+        mean_before=2.5,
+        std_before=1.0,
+        mean_after=2.5,
+        std_after=3.0,
+        label="Late variance expansion",
+    ),
+    DriftSpec(
+        position=15000,
+        drift_type="variance",
+        mean_before=2.5,
+        std_before=3.0,
+        mean_after=2.5,
+        std_after=0.5,
+        label="Noise reduction",
     ),
 ]
 
