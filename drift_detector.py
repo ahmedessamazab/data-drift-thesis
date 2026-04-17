@@ -33,7 +33,11 @@ class DriftDetector:
     """
 
     def __init__(
-        self, net_of_x: np.ndarray, threshold: float = 0.05, warmup: int = 200
+        self,
+        net_of_x: np.ndarray,
+        threshold: float = 0.05,
+        warmup: int = 200,
+        confirmation_steps: int = 5,
     ):
         self.net_of_x = net_of_x
         self.threshold = threshold
@@ -45,6 +49,10 @@ class DriftDetector:
         # Recorded history for plotting
         self.ise_history: list[float] = []
         self.alarm_index: int | None = None  # Stream index when alarm fired
+
+        # Require multiple consecutive confirmations to reduce false alarms
+        self.confirmation_steps = confirmation_steps
+        self.counter = 0
 
     # ------------------------------------------------------------------
     # Public API
@@ -83,8 +91,15 @@ class DriftDetector:
         self.ise_history.append(ise)
 
         # Raise alarm on first threshold crossing (only once)
-        if self.alarm_index is None and ise > self.threshold:
+        # Debounced detection (reduces false alarms)
+        if ise > self.threshold:
+            self.counter += 1
+        else:
+            self.counter = 0
+
+        if self.alarm_index is None and self.counter >= self.confirmation_steps:
             self.alarm_index = stream_index
+            self.counter = 0
             return True
 
         return False
