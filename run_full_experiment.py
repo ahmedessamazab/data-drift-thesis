@@ -163,8 +163,9 @@ DRIFT_SPECS = [
 Q_PARAM = 0.5
 K_PARAM = 3.0
 GAMMA = 1.0
-WARMUP = 300
-ISE_THRESHOLD = 0.06
+WARMUP = 400
+ISE_THRESHOLD = 0.12
+CONFIRMATION_STEPS = 5  # Number of consecutive steps above threshold to confirm drift
 NET = np.linspace(-4, 10, 400)
 
 
@@ -262,7 +263,12 @@ save_fig(fig, "01_stream_overview.png")
 print("\n[2/4] Running IPNN detector ...")
 
 model = IPNN(method="series", kernel="Hermite", Q=Q_PARAM, k=K_PARAM, gamma=GAMMA)
-detector = DriftDetector(net_of_x=NET, threshold=ISE_THRESHOLD, warmup=WARMUP)
+detector = DriftDetector(
+    net_of_x=NET,
+    threshold=ISE_THRESHOLD,
+    warmup=WARMUP,
+    confirmation_steps=CONFIRMATION_STEPS,
+)
 
 alarm_positions = []
 coeff_rows = []
