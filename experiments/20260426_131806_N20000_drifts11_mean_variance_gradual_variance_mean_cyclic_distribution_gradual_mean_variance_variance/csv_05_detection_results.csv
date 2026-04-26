@@ -1,0 +1,12 @@
+drift_id,true_position,type,detected,alarm_position,delay_samples,label
+1,800,mean,True,844.0,44.0,Abrupt mean drift (0 to 2.5)
+2,1500,variance,True,1852.0,352.0,Variance drift (sigma 1 to 2.5)
+3,2200,gradual,True,2340.0,140.0,Gradual mean drift (2.5 to 5.0)
+4,3000,variance,True,3445.0,445.0,Variance shrink (1.0 → 0.3)
+5,4000,mean,True,4316.0,316.0,Mean reversal (5 → 0)
+6,5000,cyclic,True,6087.0,1087.0,Cyclic drift (sin wave)
+7,6000,distribution,True,7515.0,1515.0,Gaussian → Uniform
+8,7000,gradual,True,10204.0,3204.0,Very slow gradual drift
+9,9000,mean,True,12251.0,3251.0,Abrupt mean drift 2 (3.0 to 2.5)
+10,12000,variance,True,17252.0,5252.0,Late variance expansion
+11,15000,variance,False,,,Noise reduction
