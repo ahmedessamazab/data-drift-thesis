@@ -160,11 +160,11 @@ DRIFT_SPECS = [
     ),
 ]
 
-Q_PARAM = 0.5
-K_PARAM = 3.0
+Q_PARAM = 0.1
+K_PARAM = 20
 GAMMA = 1.0
 WARMUP = 300
-ISE_THRESHOLD = 0.1
+ISE_THRESHOLD = 0.08
 CONFIRMATION_STEPS = 7  # Number of consecutive steps above threshold to confirm drift
 NET = np.linspace(-4, 10, 400)
 
