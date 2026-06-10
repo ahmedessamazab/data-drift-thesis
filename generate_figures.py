@@ -235,7 +235,7 @@ def figure1_architecture(out_dir):
             bbox=dict(boxstyle='round,pad=0.4',facecolor='#eaf2ff',
                       edgecolor='#1a5276',linewidth=1.2))
 
-    ax.set_title('Figure 1 – IPNN-Based Concept Drift Detection Framework',
+    ax.set_title('Figure 2 – IPNN-Based Concept Drift Detection Framework',
                  fontsize=13,fontweight='bold',color='#1a252f',pad=12)
     save(fig,'Figure1_Architecture.png',out_dir)
 
@@ -287,7 +287,7 @@ def figure2_concept(out_dir):
     ax2.legend(fontsize=8.5,loc='upper left'); ax2.set_ylim(bottom=0)
     ax2.grid(alpha=0.25); ax2.spines[['top','right']].set_visible(False)
 
-    fig.suptitle('Figure 2 – Conceptual Illustration of IPNN-Based Drift Detection',
+    fig.suptitle('Figure 1 – Conceptual Illustration of IPNN-Based Drift Detection',
                  fontsize=13,fontweight='bold',y=1.01)
     plt.tight_layout()
     save(fig,'Figure2_Concept.png',out_dir)
@@ -337,7 +337,7 @@ def figure3_ise_timeline(d, out_dir):
     ax.set_xlim(0,N); ax.set_ylim(-0.005,ise.max()*1.15)
     ax.set_xlabel('Stream position n',fontsize=11)
     ax.set_ylabel('ISE value',fontsize=11)
-    ax.set_title(f'Figure 3 – ISE Monitoring Timeline: {d["n_drifts"]} Drift Events, '
+    ax.set_title(f'Figure 4 – ISE Monitoring Timeline: {d["n_drifts"]} Drift Events, '
                  f'N={N:,}   (Q=0.5, k=3, τ={THRESHOLD}, w={WARMUP})',
                  fontsize=12,fontweight='bold')
     ax.grid(alpha=0.2); ax.spines[['top','right']].set_visible(False)
@@ -414,7 +414,7 @@ def figure4_detection_results(d, out_dir):
     ax2.legend(fontsize=9); ax2.grid(axis='y',alpha=0.25)
     ax2.spines[['top','right']].set_visible(False)
 
-    fig.suptitle('Figure 4 – Detection Performance: Per-Drift Delays and Q-Parameter Sensitivity',
+    fig.suptitle('Figure 6 – Detection Performance: Per-Drift Delays and Q-Parameter Sensitivity',
                  fontsize=12,fontweight='bold',y=1.01)
     plt.tight_layout()
     save(fig,'Figure4_Detection_Results.png',out_dir)
@@ -515,7 +515,7 @@ def figure6_stream_overview(d, out_dir):
     # Figure Title (Above Entire Figure)
     # ============================================================
     fig.suptitle(
-        'Figure 6. Synthetic Stream Overview with Drift Markers and Detection Alarms',
+        'Figure 3 – Synthetic Stream Overview with Drift Markers and Detection Alarms',
         fontsize=14,
         fontweight='bold',
         y=0.98
